@@ -102,7 +102,7 @@ class AddEdit extends Component {
       firstName: Yup.string().required('First Name is required'),
       lastName: Yup.string().required('Last Name is required'),
       email: Yup.string()
-        .email('Email is invalid')
+        // .email('Email is invalid')
         .required('Email is required'),
       driftssenter: Yup.string().required('Driftssenter is required'),
       role: Yup.string().required('Role is required'),
