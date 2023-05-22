@@ -1,0 +1,23 @@
+{
+    "name": "react-formik-master-details-crud-example",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "formik": "^2.1.4",
+        "prop-types": "^15.7.2",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-router-dom": "^5.1.2",
+        "rxjs": "^6.5.5",
+        "yup": "^0.28.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    },
+    "devDependencies": {
+        "react-scripts": "latest"
+    }
+}
