@@ -219,7 +219,7 @@ function AddEdit({ history, match }) {
             </div>
             {!isAddMode && (
               <div>
-                <h3 className="pt-3">Change Password</h3>
+                <h3 className="pt-3">Endre passord</h3>
                 <p>Leave blank to keep the same password</p>
               </div>
             )}
