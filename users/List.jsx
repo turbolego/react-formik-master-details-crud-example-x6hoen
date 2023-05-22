@@ -23,8 +23,8 @@ function List({ match }) {
 
     return (
         <div>
-            <h1>Users</h1>
-            <Link to={`${path}/add`} className="btn btn-sm btn-success mb-2">Add User</Link>
+            <h1>Foretak</h1>
+            <Link to={`${path}/add`} className="btn btn-sm btn-success mb-2">Legg til foretak</Link>
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -41,11 +41,11 @@ function List({ match }) {
                             <td>{user.email}</td>
                             <td>{user.role}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
-                                <Link to={`${path}/edit/${user.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
+                                <Link to={`${path}/edit/${user.id}`} className="btn btn-sm btn-primary mr-1">Rediger</Link>
                                 <button onClick={() => deleteUser(user.id)} className="btn btn-sm btn-danger btn-delete-user" disabled={user.isDeleting}>
                                     {user.isDeleting 
                                         ? <span className="spinner-border spinner-border-sm"></span>
-                                        : <span>Delete</span>
+                                        : <span>Slett</span>
                                     }
                                 </button>
                             </td>
