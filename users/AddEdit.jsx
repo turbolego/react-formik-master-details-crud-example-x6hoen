@@ -220,7 +220,7 @@ function AddEdit({ history, match }) {
             {!isAddMode && (
               <div>
                 <h3 className="pt-3">Endre passord</h3>
-                <p>Leave blank to keep the same password</p>
+                <p>La feltet stå tomt for å beholde samme passord</p>
               </div>
             )}
             <div className="form-row">
