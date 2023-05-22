@@ -1,71 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { userService, alertService } from '../_services';
 
-function AddEdit({ history, match }) {
-  const { id } = match.params;
-  const isAddMode = !id;
+class AddEdit extends Component {
+  constructor(props) {
+    super(props);
 
-  const initialValues = {
-    title: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    driftssenter: '',
-    role: '',
-    password: '',
-    confirmPassword: '',
-  };
+    this.state = {
+      id: props.match.params.id,
+      isAddMode: !props.match.params.id,
+      user: {},
+      showPassword: false,
+    };
+    this.formikRef = null;
+  }
 
-  const validationSchema = Yup.object().shape({
-    title: Yup.string().required('Title is required'),
-    firstName: Yup.string().required('First Name is required'),
-    lastName: Yup.string().required('Last Name is required'),
-    email: Yup.string().email('Email is invalid').required('Email is required'),
-    driftssenter: Yup.string().required('Driftssenter is required'),
-    role: Yup.string().required('Role is required'),
-    password: Yup.string()
-      .concat(isAddMode ? Yup.string().required('Password is required') : null)
-      .min(6, 'Password must be at least 6 characters'),
-    confirmPassword: Yup.string()
-      .when('password', (password, schema) => {
-        if (password || isAddMode)
-          return schema.required('Confirm Password is required');
-      })
-      .oneOf([Yup.ref('password')], 'Passwords must match'),
-  });
-
-  function onSubmit(fields, { setStatus, setSubmitting }) {
-    setStatus();
-    if (isAddMode) {
-      createUser(fields, setSubmitting);
-    } else {
-      updateUser(id, fields, setSubmitting);
+  componentDidMount() {
+    const { id, isAddMode } = this.state;
+    if (!isAddMode) {
+      // get user and set form fields
+      userService.getById(id).then((user) => {
+        const fields = [
+          'title',
+          'firstName',
+          'lastName',
+          'email',
+          'driftssenter',
+          'role',
+        ];
+        fields.forEach((field) =>
+          this.setFieldValue(field, user[field], false)
+        );
+        this.setState({ user });
+      });
     }
   }
 
-  function createUser(fields, setSubmitting) {
+  createUser(fields, setSubmitting) {
     userService
       .create(fields)
       .then(() => {
         alertService.success('User added', { keepAfterRouteChange: true });
-        history.push('.');
-      })
-      .catch(() => {
-        setSubmitting(false);
-        alertService.error(error);
-      });
-  }
-
-  function updateUser(id, fields, setSubmitting) {
-    userService
-      .update(id, fields)
-      .then(() => {
-        alertService.success('User updated', { keepAfterRouteChange: true });
-        history.push('..');
+        this.props.history.push('.');
       })
       .catch((error) => {
         setSubmitting(false);
@@ -73,37 +52,81 @@ function AddEdit({ history, match }) {
       });
   }
 
-  return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-    >
-      {({ errors, touched, isSubmitting, setFieldValue }) => {
-        const [user, setUser] = useState({});
-        const [showPassword, setShowPassword] = useState(false);
+  updateUser(id, fields, setSubmitting) {
+    userService
+      .update(id, fields)
+      .then(() => {
+        alertService.success('User updated', { keepAfterRouteChange: true });
+        this.props.history.push('..');
+      })
+      .catch((error) => {
+        setSubmitting(false);
+        alertService.error(error);
+      });
+  }
 
-        useEffect(() => {
-          if (!isAddMode) {
-            // get user and set form fields
-            userService.getById(id).then((user) => {
-              const fields = [
-                'title',
-                'firstName',
-                'lastName',
-                'email',
-                'driftssenter',
-                'role',
-              ];
-              fields.forEach((field) =>
-                setFieldValue(field, user[field], false)
-              );
-              setUser(user);
-            });
-          }
-        }, []);
+  onSubmit = (fields, { setStatus, setSubmitting }) => {
+    setStatus();
+    const { id, isAddMode } = this.state;
+    if (isAddMode) {
+      this.createUser(fields, setSubmitting);
+    } else {
+      this.updateUser(id, fields, setSubmitting);
+    }
+  };
 
-        return (
+  setFieldValue(field, value, shouldValidate = true) {
+    if (shouldValidate) {
+      this.formikRef.setFieldValue(field, value, shouldValidate);
+    } else {
+      this.formikRef.setFieldValue(field, value);
+    }
+  }
+
+  render() {
+    const { isAddMode, user, showPassword } = this.state;
+
+    const initialValues = {
+      title: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      driftssenter: '',
+      role: '',
+      password: '',
+      confirmPassword: '',
+    };
+
+    const validationSchema = Yup.object().shape({
+      title: Yup.string().required('Title is required'),
+      firstName: Yup.string().required('First Name is required'),
+      lastName: Yup.string().required('Last Name is required'),
+      email: Yup.string()
+        .email('Email is invalid')
+        .required('Email is required'),
+      driftssenter: Yup.string().required('Driftssenter is required'),
+      role: Yup.string().required('Role is required'),
+      password: Yup.string()
+        .concat(
+          isAddMode ? Yup.string().required('Password is required') : null
+        )
+        .min(6, 'Password must be at least 6 characters'),
+      confirmPassword: Yup.string()
+        .when('password', (password, schema) => {
+          if (password || isAddMode)
+            return schema.required('Confirm Password is required');
+        })
+        .oneOf([Yup.ref('password')], 'Passwords must match'),
+    });
+
+    return (
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={this.onSubmit}
+        innerRef={(formikRef) => (this.formikRef = formikRef)}
+      >
+        {(formik) => (
           <Form>
             <h1>Hvilken ordning søker du på?</h1>
             <div className="form-row">
@@ -135,7 +158,9 @@ function AddEdit({ history, match }) {
                   type="text"
                   className={
                     'form-control' +
-                    (errors.firstName && touched.firstName ? ' is-invalid' : '')
+                    (formik.errors.firstName && formik.touched.firstName
+                      ? ' is-invalid'
+                      : '')
                   }
                 />
                 <ErrorMessage
@@ -151,7 +176,9 @@ function AddEdit({ history, match }) {
                   type="text"
                   className={
                     'form-control' +
-                    (errors.lastName && touched.lastName ? ' is-invalid' : '')
+                    (formik.errors.lastName && formik.touched.lastName
+                      ? ' is-invalid'
+                      : '')
                   }
                 />
                 <ErrorMessage
@@ -169,7 +196,9 @@ function AddEdit({ history, match }) {
                   type="text"
                   className={
                     'form-control' +
-                    (errors.email && touched.email ? ' is-invalid' : '')
+                    (formik.errors.email && formik.touched.email
+                      ? ' is-invalid'
+                      : '')
                   }
                 />
                 <ErrorMessage
@@ -185,7 +214,7 @@ function AddEdit({ history, match }) {
                   type="text"
                   className={
                     'form-control' +
-                    (errors.driftssenter && touched.driftssenter
+                    (formik.errors.driftssenter && formik.touched.driftssenter
                       ? ' is-invalid'
                       : '')
                   }
@@ -203,7 +232,9 @@ function AddEdit({ history, match }) {
                   as="select"
                   className={
                     'form-control' +
-                    (errors.role && touched.role ? ' is-invalid' : '')
+                    (formik.errors.role && formik.touched.role
+                      ? ' is-invalid'
+                      : '')
                   }
                 >
                   <option value=""></option>
@@ -228,19 +259,23 @@ function AddEdit({ history, match }) {
                 <label>
                   Password
                   {!isAddMode &&
-                    (!showPassword ? (
+                    (!this.state.showPassword ? (
                       <span>
                         {' '}
                         -{' '}
                         <a
-                          onClick={() => setShowPassword(!showPassword)}
+                          onClick={() =>
+                            this.setState({
+                              showPassword: !this.state.showPassword,
+                            })
+                          }
                           className="text-primary"
                         >
                           Show
                         </a>
                       </span>
                     ) : (
-                      <span> - {user.password}</span>
+                      <span> - {this.state.user.password}</span>
                     ))}
                 </label>
                 <Field
@@ -248,7 +283,9 @@ function AddEdit({ history, match }) {
                   type="password"
                   className={
                     'form-control' +
-                    (errors.password && touched.password ? ' is-invalid' : '')
+                    (formik.errors.password && formik.touched.password
+                      ? ' is-invalid'
+                      : '')
                   }
                 />
                 <ErrorMessage
@@ -264,7 +301,8 @@ function AddEdit({ history, match }) {
                   type="password"
                   className={
                     'form-control' +
-                    (errors.confirmPassword && touched.confirmPassword
+                    (formik.errors.confirmPassword &&
+                    formik.touched.confirmPassword
                       ? ' is-invalid'
                       : '')
                   }
@@ -279,10 +317,10 @@ function AddEdit({ history, match }) {
             <div className="form-group">
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={formik.isSubmitting}
                 className="btn btn-primary"
               >
-                {isSubmitting && (
+                {formik.isSubmitting && (
                   <span className="spinner-border spinner-border-sm mr-1"></span>
                 )}
                 Save
@@ -292,10 +330,10 @@ function AddEdit({ history, match }) {
               </Link>
             </div>
           </Form>
-        );
-      }}
-    </Formik>
-  );
+        )}
+      </Formik>
+    );
+  }
 }
 
 export { AddEdit };
