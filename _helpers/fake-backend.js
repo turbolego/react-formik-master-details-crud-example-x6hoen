@@ -5,7 +5,7 @@ export function configureFakeBackend() {
   let users = JSON.parse(localStorage.getItem('users')) || [
     {
       id: 1,
-      title: 'Vanningslag',
+      foretak: 'Vanningslag',
       firstName: 'Navn Navnesen',
       lastName: 'Navnevegen 99, 1234 Oslo',
       email: '987654321',

@@ -28,16 +28,16 @@ function List({ match }) {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th style={{ width: '30%' }}>Name</th>
-                        <th style={{ width: '30%' }}>Email</th>
-                        <th style={{ width: '30%' }}>Role</th>
-                        <th style={{ width: '10%' }}></th>
+                        <th style={{ width: '30%' }}>Foretaksnavn</th>
+                        <th style={{ width: '30%' }}>Organisasjonsnummer</th>
+                        <th style={{ width: '30%' }}>Tilgangsnivå</th>
+                        <th style={{ width: '10%' }}>Handlinger</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users && users.map(user =>
                         <tr key={user.id}>
-                            <td>{user.title} {user.firstName} {user.lastName}</td>
+                            <td>{user.foretak} {user.firstName} {user.lastName}</td>
                             <td>{user.email}</td>
                             <td>{user.role}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>

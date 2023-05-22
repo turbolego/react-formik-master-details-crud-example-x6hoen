@@ -24,7 +24,7 @@ class AddEdit extends Component {
       // get user and set form fields
       userService.getById(id).then((user) => {
         const fields = [
-          'title',
+          'foretak',
           'firstName',
           'lastName',
           'email',
@@ -87,7 +87,7 @@ class AddEdit extends Component {
     const { isAddMode, user, showPassword } = this.state;
 
     const initialValues = {
-      title: '',
+      foretak: '',
       firstName: '',
       lastName: '',
       email: '',
@@ -98,7 +98,7 @@ class AddEdit extends Component {
     };
 
     const validationSchema = Yup.object().shape({
-      title: Yup.string().required('Title is required'),
+      foretak: Yup.string().required('Foretaksnavn er obligatorisk'),
       firstName: Yup.string().required('First Name is required'),
       lastName: Yup.string().required('Last Name is required'),
       email: Yup.string()
@@ -134,15 +134,15 @@ class AddEdit extends Component {
                 <div id="my-radio-group">Velg ordning</div>
                 <div role="group" aria-labelledby="my-radio-group">
                   <label style={{ display: 'block' }}>
-                    <Field type="radio" name="title" value="Veksthus" />
+                    <Field type="radio" name="foretak" value="Veksthus" />
                     Veksthus
                   </label>
                   <label style={{ display: 'block' }}>
-                    <Field type="radio" name="title" value="Vanningslag" />
+                    <Field type="radio" name="foretak" value="Vanningslag" />
                     Vanningslag
                   </label>
                   <ErrorMessage
-                    name="title"
+                    name="foretak"
                     component="div"
                     className="invalid-feedback"
                   />
