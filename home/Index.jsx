@@ -5,7 +5,7 @@ function Home() {
     return (
         <div>
             <h1>Prototype</h1>
-            <p>Rediger foretak for å teste med mock-data.</p>
+            <p>Rediger eller opprett foretak for å teste med mock-data.</p>
             <p><Link to="users">Foretak</Link></p>
         </div>
     );
