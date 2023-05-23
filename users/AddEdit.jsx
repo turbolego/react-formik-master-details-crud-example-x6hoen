@@ -30,6 +30,7 @@ class AddEdit extends Component {
           'email',
           'driftssenter',
           'role',
+          'checkboxes',
         ];
         fields.forEach((field) =>
           this.setFieldValue(field, user[field], false)
@@ -66,6 +67,7 @@ class AddEdit extends Component {
   }
 
   onSubmit = (fields, { setStatus, setSubmitting }) => {
+    console.log(fields);
     setStatus();
     const { id, isAddMode } = this.state;
     if (isAddMode) {
@@ -95,6 +97,7 @@ class AddEdit extends Component {
       role: '',
       password: '',
       confirmPassword: '',
+      checkboxes: [],
     };
 
     const validationSchema = Yup.object().shape({
@@ -328,6 +331,97 @@ class AddEdit extends Component {
               <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
                 Cancel
               </Link>
+            </div>
+            <h1>Produksjon</h1>
+            <div className="form-row">
+              <div className="form-group col">
+                <div id="my-checkbox-group">
+                  Hvilket type vekst har du i produksjon i veksthus i April?
+                </div>
+                <div
+                  role="group"
+                  aria-labelledby="my-checkbox-group"
+                  className={
+                    'form-control' +
+                    (formik.errors.checkboxes && formik.touched.checkboxes
+                      ? ' is-invalid'
+                      : '')
+                  }
+                >
+                  <div>
+                    <label>
+                      <Field
+                        type="checkbox"
+                        name="checkboxes"
+                        value="Grønnsaker"
+                        className="mr-2"
+                      />
+                      Grønnsaker
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <Field
+                        type="checkbox"
+                        name="checkboxes"
+                        value="Frukt og bær"
+                        className="mr-2"
+                      />
+                      Frukt og bær
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <Field
+                        type="checkbox"
+                        name="checkboxes"
+                        value="Krydderurter"
+                        className="mr-2"
+                      />
+                      Krydderurter
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <Field
+                        type="checkbox"
+                        name="checkboxes"
+                        value="Blomster"
+                        className="mr-2"
+                      />
+                      Blomster
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <Field
+                        type="checkbox"
+                        name="checkboxes"
+                        value="Planteskolevekst"
+                        className="mr-2"
+                      />
+                      Planteskolevekst
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      <Field
+                        type="checkbox"
+                        name="checkboxes"
+                        value="Ungplanter"
+                        className="mr-2"
+                      />
+                      Ungplanter
+                    </label>
+                  </div>
+                </div>
+
+                <ErrorMessage
+                  name="checkboxes"
+                  component="div"
+                  className="invalid-feedback"
+                />
+              </div>
             </div>
           </Form>
         )}
