@@ -13,7 +13,7 @@ class AddEdit extends Component {
       id: props.match.params.id,
       isAddMode: !props.match.params.id,
       user: {},
-      showPassword: false,
+      /* showPassword: false, */
     };
     this.formikRef = null;
   }
@@ -86,7 +86,9 @@ class AddEdit extends Component {
   }
 
   render() {
-    const { isAddMode, user, showPassword } = this.state;
+    const { isAddMode, user
+     /*  , showPassword */
+     } = this.state;
 
     const initialValues = {
       foretak: '',
@@ -95,8 +97,8 @@ class AddEdit extends Component {
       email: '',
       driftssenter: '',
       role: '',
-      password: '',
-      confirmPassword: '',
+/*       password: '',
+      confirmPassword: '', */
       checkboxes: [],
     };
 
@@ -109,7 +111,7 @@ class AddEdit extends Component {
         .required('Email is required'),
       driftssenter: Yup.string().required('Driftssenter is required'),
       role: Yup.string().required('Role is required'),
-      password: Yup.string()
+      /* password: Yup.string()
         .concat(
           isAddMode ? Yup.string().required('Password is required') : null
         )
@@ -119,7 +121,7 @@ class AddEdit extends Component {
           if (password || isAddMode)
             return schema.required('Confirm Password is required');
         })
-        .oneOf([Yup.ref('password')], 'Passwords must match'),
+        .oneOf([Yup.ref('password')], 'Passwords must match'), */
     });
 
     return (
@@ -251,7 +253,7 @@ class AddEdit extends Component {
                 />
               </div>
             </div>
-            {!isAddMode && (
+            {/* {!isAddMode && (
               <div>
                 <h3 className="pt-3">Endre passord</h3>
                 <p>La feltet stå tomt for å beholde samme passord</p>
@@ -331,7 +333,7 @@ class AddEdit extends Component {
               <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
                 Cancel
               </Link>
-            </div>
+            </div> */}
             <h1>Produksjon</h1>
             <div className="form-row">
               <div className="form-group col">
