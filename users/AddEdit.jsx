@@ -334,7 +334,7 @@ class AddEdit extends Component {
                   className="invalid-feedback"
                 />
               </div>
-            </div>
+            </div>*/}
             <div className="form-group">
               <button
                 type="submit"
@@ -349,7 +349,7 @@ class AddEdit extends Component {
               <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
                 Cancel
               </Link>
-            </div> */}
+            </div>
             {this.state.showProduksjon && (
               <div>
                 <h1>Produksjon</h1>
