@@ -12,7 +12,7 @@ export function configureFakeBackend() {
       driftssenter: '1537-23/2',
       role: Role.User,
       checkboxes: ['Blomster', 'Ungplanter'],
-      password: 'joe123',
+      /* password: 'joe123', */
     },
   ];
 
@@ -65,7 +65,7 @@ export function configureFakeBackend() {
         // assign user id and a few other properties then save
         user.id = newUserId();
         user.dateCreated = new Date().toISOString();
-        delete user.confirmPassword;
+        /* delete user.confirmPassword; */
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
 
@@ -76,12 +76,12 @@ export function configureFakeBackend() {
         let params = body();
         let user = users.find((x) => x.id === idFromUrl());
 
-        // only update password if included
+        /*         // only update password if included
         if (!params.password) {
           delete params.password;
         }
         // don't save confirm password
-        delete params.confirmPassword;
+        delete params.confirmPassword; */
 
         // update and save user
         Object.assign(user, params);
