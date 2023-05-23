@@ -344,10 +344,10 @@ class AddEdit extends Component {
                 {formik.isSubmitting && (
                   <span className="spinner-border spinner-border-sm mr-1"></span>
                 )}
-                Save
+                Lagre
               </button>
               <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
-                Cancel
+                Avbryt
               </Link>
             </div>
             {this.state.showProduksjon && (
