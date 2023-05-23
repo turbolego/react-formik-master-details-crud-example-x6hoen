@@ -14,6 +14,7 @@ class AddEdit extends Component {
       isAddMode: !props.match.params.id,
       user: {},
       /* showPassword: false, */
+      showProduksjon: false,
     };
     this.formikRef = null;
   }
@@ -36,6 +37,9 @@ class AddEdit extends Component {
           this.setFieldValue(field, user[field], false)
         );
         this.setState({ user });
+        if (user.foretak === 'Veksthus') {
+          this.setState({ showProduksjon: true });
+        }
       });
     }
   }
@@ -85,10 +89,18 @@ class AddEdit extends Component {
     }
   }
 
+  handleForetakChange = (event) => {
+    const { value } = event.target;
+    const showProduksjon = value === 'Veksthus';
+    this.setState({ showProduksjon });
+  };
+
   render() {
-    const { isAddMode, user
-     /*  , showPassword */
-     } = this.state;
+    const {
+      isAddMode,
+      user,
+      /*  , showPassword */
+    } = this.state;
 
     const initialValues = {
       foretak: '',
@@ -97,7 +109,7 @@ class AddEdit extends Component {
       email: '',
       driftssenter: '',
       role: '',
-/*       password: '',
+      /*       password: '',
       confirmPassword: '', */
       checkboxes: [],
     };
@@ -137,14 +149,18 @@ class AddEdit extends Component {
             <div className="form-row">
               <div className="form-group col">
                 <div id="my-radio-group">Velg ordning</div>
-                <div role="group" aria-labelledby="my-radio-group">
-                  <label style={{ display: 'block' }}>
-                    <Field type="radio" name="foretak" value="Veksthus" />
-                    Veksthus
-                  </label>
+                <div
+                  role="group"
+                  aria-labelledby="my-radio-group"
+                  onChange={this.handleForetakChange}
+                >
                   <label style={{ display: 'block' }}>
                     <Field type="radio" name="foretak" value="Vanningslag" />
                     Vanningslag
+                  </label>
+                  <label style={{ display: 'block' }}>
+                    <Field type="radio" name="foretak" value="Veksthus" />
+                    Veksthus
                   </label>
                   <ErrorMessage
                     name="foretak"
@@ -334,97 +350,101 @@ class AddEdit extends Component {
                 Cancel
               </Link>
             </div> */}
-            <h1>Produksjon</h1>
-            <div className="form-row">
-              <div className="form-group col">
-                <div id="my-checkbox-group">
-                  Hvilket type vekst har du i produksjon i veksthus i April?
-                </div>
-                <div
-                  role="group"
-                  aria-labelledby="my-checkbox-group"
-                  className={
-                    'form-control' +
-                    (formik.errors.checkboxes && formik.touched.checkboxes
-                      ? ' is-invalid'
-                      : '')
-                  }
-                >
-                  <div>
-                    <label>
-                      <Field
-                        type="checkbox"
-                        name="checkboxes"
-                        value="Grønnsaker"
-                        className="mr-2"
-                      />
-                      Grønnsaker
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <Field
-                        type="checkbox"
-                        name="checkboxes"
-                        value="Frukt og bær"
-                        className="mr-2"
-                      />
-                      Frukt og bær
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <Field
-                        type="checkbox"
-                        name="checkboxes"
-                        value="Krydderurter"
-                        className="mr-2"
-                      />
-                      Krydderurter
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <Field
-                        type="checkbox"
-                        name="checkboxes"
-                        value="Blomster"
-                        className="mr-2"
-                      />
-                      Blomster
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <Field
-                        type="checkbox"
-                        name="checkboxes"
-                        value="Planteskolevekst"
-                        className="mr-2"
-                      />
-                      Planteskolevekst
-                    </label>
-                  </div>
-                  <div>
-                    <label>
-                      <Field
-                        type="checkbox"
-                        name="checkboxes"
-                        value="Ungplanter"
-                        className="mr-2"
-                      />
-                      Ungplanter
-                    </label>
-                  </div>
-                </div>
+            {this.state.showProduksjon && (
+              <div>
+                <h1>Produksjon</h1>
+                <div className="form-row">
+                  <div className="form-group col">
+                    <div id="my-checkbox-group">
+                      Hvilket type vekst har du i produksjon i veksthus i April?
+                    </div>
+                    <div
+                      role="group"
+                      aria-labelledby="my-checkbox-group"
+                      className={
+                        'form-control' +
+                        (formik.errors.checkboxes && formik.touched.checkboxes
+                          ? ' is-invalid'
+                          : '')
+                      }
+                    >
+                      <div>
+                        <label>
+                          <Field
+                            type="checkbox"
+                            name="checkboxes"
+                            value="Grønnsaker"
+                            className="mr-2"
+                          />
+                          Grønnsaker
+                        </label>
+                      </div>
+                      <div>
+                        <label>
+                          <Field
+                            type="checkbox"
+                            name="checkboxes"
+                            value="Frukt og bær"
+                            className="mr-2"
+                          />
+                          Frukt og bær
+                        </label>
+                      </div>
+                      <div>
+                        <label>
+                          <Field
+                            type="checkbox"
+                            name="checkboxes"
+                            value="Krydderurter"
+                            className="mr-2"
+                          />
+                          Krydderurter
+                        </label>
+                      </div>
+                      <div>
+                        <label>
+                          <Field
+                            type="checkbox"
+                            name="checkboxes"
+                            value="Blomster"
+                            className="mr-2"
+                          />
+                          Blomster
+                        </label>
+                      </div>
+                      <div>
+                        <label>
+                          <Field
+                            type="checkbox"
+                            name="checkboxes"
+                            value="Planteskolevekst"
+                            className="mr-2"
+                          />
+                          Planteskolevekst
+                        </label>
+                      </div>
+                      <div>
+                        <label>
+                          <Field
+                            type="checkbox"
+                            name="checkboxes"
+                            value="Ungplanter"
+                            className="mr-2"
+                          />
+                          Ungplanter
+                        </label>
+                      </div>
+                    </div>
 
-                <ErrorMessage
-                  name="checkboxes"
-                  component="div"
-                  className="invalid-feedback"
-                />
+                    <ErrorMessage
+                      name="checkboxes"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </Form>
         )}
       </Formik>
