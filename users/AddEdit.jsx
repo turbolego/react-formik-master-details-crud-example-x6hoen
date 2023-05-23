@@ -4,6 +4,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { userService, alertService } from '../_services';
+import DataService from '../_services/brreg.service';
 
 class AddEdit extends Component {
   constructor(props) {
@@ -137,139 +138,141 @@ class AddEdit extends Component {
     });
 
     return (
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={this.onSubmit}
-        innerRef={(formikRef) => (this.formikRef = formikRef)}
-      >
-        {(formik) => (
-          <Form>
-            <h1>Hvilken ordning søker du på?</h1>
-            <div className="form-row">
-              <div className="form-group col">
-                <div id="my-radio-group">Velg ordning</div>
-                <div
-                  role="group"
-                  aria-labelledby="my-radio-group"
-                  onChange={this.handleForetakChange}
-                >
-                  <label style={{ display: 'block' }}>
-                    <Field type="radio" name="foretak" value="Vanningslag" />
-                    Vanningslag
-                  </label>
-                  <label style={{ display: 'block' }}>
-                    <Field type="radio" name="foretak" value="Veksthus" />
-                    Veksthus
-                  </label>
+      <div>
+        <DataService />
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={this.onSubmit}
+          innerRef={(formikRef) => (this.formikRef = formikRef)}
+        >
+          {(formik) => (
+            <Form>
+              <h1>Hvilken ordning søker du på?</h1>
+              <div className="form-row">
+                <div className="form-group col">
+                  <div id="my-radio-group">Velg ordning</div>
+                  <div
+                    role="group"
+                    aria-labelledby="my-radio-group"
+                    onChange={this.handleForetakChange}
+                  >
+                    <label style={{ display: 'block' }}>
+                      <Field type="radio" name="foretak" value="Vanningslag" />
+                      Vanningslag
+                    </label>
+                    <label style={{ display: 'block' }}>
+                      <Field type="radio" name="foretak" value="Veksthus" />
+                      Veksthus
+                    </label>
+                    <ErrorMessage
+                      name="foretak"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </div>
+                </div>
+              </div>
+              <h1>{isAddMode ? 'Opprett foretak' : 'Rediger foretak'}</h1>
+              <div className="form-row">
+                <div className="form-group col-5">
+                  <label>Navn på foretak</label>
+                  <Field
+                    name="firstName"
+                    type="text"
+                    className={
+                      'form-control' +
+                      (formik.errors.firstName && formik.touched.firstName
+                        ? ' is-invalid'
+                        : '')
+                    }
+                  />
                   <ErrorMessage
-                    name="foretak"
+                    name="firstName"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+                <div className="form-group col-5">
+                  <label>Adresse</label>
+                  <Field
+                    name="lastName"
+                    type="text"
+                    className={
+                      'form-control' +
+                      (formik.errors.lastName && formik.touched.lastName
+                        ? ' is-invalid'
+                        : '')
+                    }
+                  />
+                  <ErrorMessage
+                    name="lastName"
                     component="div"
                     className="invalid-feedback"
                   />
                 </div>
               </div>
-            </div>
-            <h1>{isAddMode ? 'Opprett foretak' : 'Rediger foretak'}</h1>
-            <div className="form-row">
-              <div className="form-group col-5">
-                <label>Navn på foretak</label>
-                <Field
-                  name="firstName"
-                  type="text"
-                  className={
-                    'form-control' +
-                    (formik.errors.firstName && formik.touched.firstName
-                      ? ' is-invalid'
-                      : '')
-                  }
-                />
-                <ErrorMessage
-                  name="firstName"
-                  component="div"
-                  className="invalid-feedback"
-                />
+              <div className="form-row">
+                <div className="form-group col-7">
+                  <label>Organisasjonsnummer</label>
+                  <Field
+                    name="email"
+                    type="text"
+                    className={
+                      'form-control' +
+                      (formik.errors.email && formik.touched.email
+                        ? ' is-invalid'
+                        : '')
+                    }
+                  />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+                <div className="form-group col-7">
+                  <label>Driftssenter</label>
+                  <Field
+                    name="driftssenter"
+                    type="text"
+                    className={
+                      'form-control' +
+                      (formik.errors.driftssenter && formik.touched.driftssenter
+                        ? ' is-invalid'
+                        : '')
+                    }
+                  />
+                  <ErrorMessage
+                    name="driftssenter"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
+                <div className="form-group col">
+                  <label>Role</label>
+                  <Field
+                    name="role"
+                    as="select"
+                    className={
+                      'form-control' +
+                      (formik.errors.role && formik.touched.role
+                        ? ' is-invalid'
+                        : '')
+                    }
+                  >
+                    <option value=""></option>
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                  </Field>
+                  <ErrorMessage
+                    name="role"
+                    component="div"
+                    className="invalid-feedback"
+                  />
+                </div>
               </div>
-              <div className="form-group col-5">
-                <label>Adresse</label>
-                <Field
-                  name="lastName"
-                  type="text"
-                  className={
-                    'form-control' +
-                    (formik.errors.lastName && formik.touched.lastName
-                      ? ' is-invalid'
-                      : '')
-                  }
-                />
-                <ErrorMessage
-                  name="lastName"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group col-7">
-                <label>Organisasjonsnummer</label>
-                <Field
-                  name="email"
-                  type="text"
-                  className={
-                    'form-control' +
-                    (formik.errors.email && formik.touched.email
-                      ? ' is-invalid'
-                      : '')
-                  }
-                />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-              <div className="form-group col-7">
-                <label>Driftssenter</label>
-                <Field
-                  name="driftssenter"
-                  type="text"
-                  className={
-                    'form-control' +
-                    (formik.errors.driftssenter && formik.touched.driftssenter
-                      ? ' is-invalid'
-                      : '')
-                  }
-                />
-                <ErrorMessage
-                  name="driftssenter"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-              <div className="form-group col">
-                <label>Role</label>
-                <Field
-                  name="role"
-                  as="select"
-                  className={
-                    'form-control' +
-                    (formik.errors.role && formik.touched.role
-                      ? ' is-invalid'
-                      : '')
-                  }
-                >
-                  <option value=""></option>
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
-                </Field>
-                <ErrorMessage
-                  name="role"
-                  component="div"
-                  className="invalid-feedback"
-                />
-              </div>
-            </div>
-            {/* {!isAddMode && (
+              {/* {!isAddMode && (
               <div>
                 <h3 className="pt-3">Endre passord</h3>
                 <p>La feltet stå tomt for å beholde samme passord</p>
@@ -335,119 +338,121 @@ class AddEdit extends Component {
                 />
               </div>
             </div>*/}
-            <div className="form-group">
-              <button
-                type="submit"
-                disabled={formik.isSubmitting}
-                className="btn btn-primary"
-              >
-                {formik.isSubmitting && (
-                  <span className="spinner-border spinner-border-sm mr-1"></span>
-                )}
-                Lagre
-              </button>
-              <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
-                Avbryt
-              </Link>
-            </div>
-            {this.state.showProduksjon && (
-              <div>
-                <h1>Produksjon</h1>
-                <div className="form-row">
-                  <div className="form-group col">
-                    <div id="my-checkbox-group">
-                      Hvilket type vekst har du i produksjon i veksthus i April?
-                    </div>
-                    <div
-                      role="group"
-                      aria-labelledby="my-checkbox-group"
-                      className={
-                        'form-control' +
-                        (formik.errors.checkboxes && formik.touched.checkboxes
-                          ? ' is-invalid'
-                          : '')
-                      }
-                    >
-                      <div>
-                        <label>
-                          <Field
-                            type="checkbox"
-                            name="checkboxes"
-                            value="Grønnsaker"
-                            className="mr-2"
-                          />
-                          Grønnsaker
-                        </label>
+              <div className="form-group">
+                <button
+                  type="submit"
+                  disabled={formik.isSubmitting}
+                  className="btn btn-primary"
+                >
+                  {formik.isSubmitting && (
+                    <span className="spinner-border spinner-border-sm mr-1"></span>
+                  )}
+                  Lagre
+                </button>
+                <Link to={isAddMode ? '.' : '..'} className="btn btn-link">
+                  Avbryt
+                </Link>
+              </div>
+              {this.state.showProduksjon && (
+                <div>
+                  <h1>Produksjon</h1>
+                  <div className="form-row">
+                    <div className="form-group col">
+                      <div id="my-checkbox-group">
+                        Hvilket type vekst har du i produksjon i veksthus i
+                        April?
                       </div>
-                      <div>
-                        <label>
-                          <Field
-                            type="checkbox"
-                            name="checkboxes"
-                            value="Frukt og bær"
-                            className="mr-2"
-                          />
-                          Frukt og bær
-                        </label>
+                      <div
+                        role="group"
+                        aria-labelledby="my-checkbox-group"
+                        className={
+                          'form-control' +
+                          (formik.errors.checkboxes && formik.touched.checkboxes
+                            ? ' is-invalid'
+                            : '')
+                        }
+                      >
+                        <div>
+                          <label>
+                            <Field
+                              type="checkbox"
+                              name="checkboxes"
+                              value="Grønnsaker"
+                              className="mr-2"
+                            />
+                            Grønnsaker
+                          </label>
+                        </div>
+                        <div>
+                          <label>
+                            <Field
+                              type="checkbox"
+                              name="checkboxes"
+                              value="Frukt og bær"
+                              className="mr-2"
+                            />
+                            Frukt og bær
+                          </label>
+                        </div>
+                        <div>
+                          <label>
+                            <Field
+                              type="checkbox"
+                              name="checkboxes"
+                              value="Krydderurter"
+                              className="mr-2"
+                            />
+                            Krydderurter
+                          </label>
+                        </div>
+                        <div>
+                          <label>
+                            <Field
+                              type="checkbox"
+                              name="checkboxes"
+                              value="Blomster"
+                              className="mr-2"
+                            />
+                            Blomster
+                          </label>
+                        </div>
+                        <div>
+                          <label>
+                            <Field
+                              type="checkbox"
+                              name="checkboxes"
+                              value="Planteskolevekst"
+                              className="mr-2"
+                            />
+                            Planteskolevekst
+                          </label>
+                        </div>
+                        <div>
+                          <label>
+                            <Field
+                              type="checkbox"
+                              name="checkboxes"
+                              value="Ungplanter"
+                              className="mr-2"
+                            />
+                            Ungplanter
+                          </label>
+                        </div>
                       </div>
-                      <div>
-                        <label>
-                          <Field
-                            type="checkbox"
-                            name="checkboxes"
-                            value="Krydderurter"
-                            className="mr-2"
-                          />
-                          Krydderurter
-                        </label>
-                      </div>
-                      <div>
-                        <label>
-                          <Field
-                            type="checkbox"
-                            name="checkboxes"
-                            value="Blomster"
-                            className="mr-2"
-                          />
-                          Blomster
-                        </label>
-                      </div>
-                      <div>
-                        <label>
-                          <Field
-                            type="checkbox"
-                            name="checkboxes"
-                            value="Planteskolevekst"
-                            className="mr-2"
-                          />
-                          Planteskolevekst
-                        </label>
-                      </div>
-                      <div>
-                        <label>
-                          <Field
-                            type="checkbox"
-                            name="checkboxes"
-                            value="Ungplanter"
-                            className="mr-2"
-                          />
-                          Ungplanter
-                        </label>
-                      </div>
-                    </div>
 
-                    <ErrorMessage
-                      name="checkboxes"
-                      component="div"
-                      className="invalid-feedback"
-                    />
+                      <ErrorMessage
+                        name="checkboxes"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </Form>
-        )}
-      </Formik>
+              )}
+            </Form>
+          )}
+        </Formik>
+      </div>
     );
   }
 }
