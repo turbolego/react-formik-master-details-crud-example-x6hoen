@@ -11,6 +11,7 @@ export function configureFakeBackend() {
       email: '987654321',
       driftssenter: '1537-23/2',
       role: Role.User,
+      checkboxes: ['Blomster', 'Ungplanter'],
       password: 'joe123',
     },
   ];
